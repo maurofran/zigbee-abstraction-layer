@@ -1,0 +1,36 @@
+{
+  "name": "zigbee-abstraction-layer",
+  "version": "0.1.0",
+  "description": "Zigbee Abstraction Layer library",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "test": "grunt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git.cedac.local:29418/zigbee-abstraction-layer.git"
+  },
+  "keywords": [
+    "zigbee"
+  ],
+  "author": "Mauro Franceschini",
+  "license": "LGPL",
+  "dependencies": {
+    "serialport": "~1.3.*",
+    "dissolve": "~0.3.2",
+    "concentrate": "~0.2.2",
+    "winston": "~0.7.2",
+    "async": "~0.2.10",
+    "node-getopt": "~0.2.3"
+  },
+  "devDependencies": {
+    "chai": "~1.9.0",
+    "grunt": "~0.4.2",
+    "grunt-cli": "~0.1.13",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-mocha-test": "~0.9.0",
+    "mocha": "^1.18.2",
+    "sinon": "~1.8.2"
+  }
+}
