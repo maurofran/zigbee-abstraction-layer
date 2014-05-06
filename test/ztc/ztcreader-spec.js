@@ -1,5 +1,5 @@
 /*
- * readsas.js
+ * ztcreader-spec.js
  * https://github.com/maurofranceschini/zal
  *
  * (C) 2014-2014 Mauro Franceschini
@@ -30,7 +30,7 @@ describe("ZtcReader", function () {
         it("should raise a message event when a valid buffer is available.", function (done) {
             var buffer = new Buffer([0x02, 0x50, 0x01, 0x01, 0x27, 0x77]);
 
-            fixture.once("message", function (message) {
+            fixture.once("frame", function (message) {
                 expect(message).to.not.be.undefined;
                 expect(message).to.be.instanceof(ZtcFrame);
                 done();
@@ -47,7 +47,7 @@ describe("ZtcReader", function () {
         it("should raise a message event when a misaligned buffer is available.", function (done) {
             var buffer = new Buffer([0x34, 0x27, 0x16, 0x02, 0x50, 0x01, 0x01, 0x27, 0x77]);
 
-            fixture.once("message", function (message) {
+            fixture.once("frame", function (message) {
                 expect(message).to.not.be.undefined;
                 expect(message).to.be.instanceof(ZtcFrame);
                 done();
@@ -66,7 +66,7 @@ describe("ZtcReader", function () {
         it("should raise an error event when a buffer with invalid checksum is available.", function (done) {
             var buffer = new Buffer([0x02, 0x50, 0x01, 0x01, 0x27, 0x32]);
 
-            fixture.once("message", function () {
+            fixture.once("frame", function () {
                 assert.fail();
                 done();
             });
