@@ -24,7 +24,7 @@ module.exports = function (grunt) {
                 maxlen: 120,
                 node: true
             },
-            all: ["Gruntfile.js", "app/**/*.js", "test/**/*.js"]
+            all: ["Gruntfile.js", "lib/**/*.js", "test/**/*.js"]
         }
     });
 
