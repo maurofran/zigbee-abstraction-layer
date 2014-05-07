@@ -14,7 +14,7 @@ var chai = require("chai"),
     expect = chai.expect,
     through = require("through"),
     ZtcWriter = require("../../lib/ztc/ztcwriter"),
-    ZtcFrame = require("../../lib/ztc/ztcframe");
+    ReadSAS = require("../../lib/ztc/frames/readsas");
 
 describe("ZtcWriter", function () {
     var fixture,
@@ -27,8 +27,8 @@ describe("ZtcWriter", function () {
 
     describe("#writeMessage(frame, callback)", function () {
         it("should write a valid message when a frame is provided.", function (done) {
-            var frame = new ZtcFrame(0x50, 0x01, new Buffer([0x27]));
-            var expected = new Buffer([0x02, 0x50, 0x01, 0x01, 0x27, 0x77]);
+            var frame = new ReadSAS(ReadSAS.Source.ROM);
+            var expected = new Buffer([0x02, 0x50, 0x02, 0x01, 0x01, 0x52]);
 
             fixture.writeFrame(frame);
 
