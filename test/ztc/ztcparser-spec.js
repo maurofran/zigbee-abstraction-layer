@@ -22,6 +22,22 @@ describe("ZtcParser", function () {
         fixture = new ZtcParser();
     });
 
+    describe("#shortAddress(name)", function () {
+        it("Should create a short address variable and return this.", function (done) {
+            fixture.shortAddress("shortAddress").tap(function () {
+                this.push(this.vars);
+            });
+            fixture.on("readable", function () {
+                var data = fixture.read();
+                expect(data).to.contain.keys(["shortAddress"]);
+                expect(data.shortAddress).to.be.instanceof(datatypes.ShortAddress);
+                done();
+            });
+
+            fixture.end(new Buffer([0x01, 0x02]));
+        });
+    });
+
     describe("#ieeeAddress(name)", function () {
         it("Should create an IEEE address variable and return this.", function (done) {
             fixture.ieeeAddress("networkAddress").tap(function () {

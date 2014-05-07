@@ -14,6 +14,7 @@ var chai = require("chai"),
     expect = chai.expect,
     ZtcBuilder = require("../../lib/ztc/ztcbuilder"),
     datatypes = require("../../lib/ztc/datatypes"),
+    ShortAddress = datatypes.ShortAddress,
     IEEEAddress = datatypes.IEEEAddress,
     PANId = datatypes.PANId,
     Key = datatypes.Key;
@@ -23,6 +24,18 @@ describe("ZtcBuilder", function () {
 
     beforeEach(function () {
         fixture = new ZtcBuilder();
+    });
+
+    describe("#shortAddress(shortAddress)", function () {
+        it("Should write a short address object and return this.", function () {
+            var shortAddress = new ShortAddress(new Buffer([0x01, 0x02]));
+
+            var buffer = fixture.shortAddress(shortAddress).result();
+
+            expect(buffer).is.not.null;
+            expect(buffer).to.have.length(2);
+            expect(buffer).to.deep.equal(shortAddress.asBuffer());
+        });
     });
 
     describe("#ieeeAddress(ieeeAddress)", function () {
