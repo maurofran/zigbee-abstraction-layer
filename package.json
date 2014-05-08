@@ -9,13 +9,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "ssh://git.cedac.local:29418/zigbee-abstraction-layer.git"
+    "url": "ssh://maurofranceschini.github.com/zigbee-abstraction-layer.git"
   },
   "keywords": [
     "zigbee"
   ],
   "author": "Mauro Franceschini",
-  "license": "LGPL",
+  "license": "Apache 2",
   "dependencies": {
     "async": "~0.2.10",
     "concentrate": "~0.2.2",

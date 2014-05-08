@@ -15,7 +15,8 @@ var chai = require("chai"),
     assert = chai.assert,
     through = require("through"),
     ZtcReader = require("../../lib/ztc/ztcreader"),
-    ZtcFrame = require("../../lib/ztc/ztcframe");
+    ZtcFrame = require("../../lib/ztc/ztcframe"),
+    SaveConfirm = require("../../lib/ztc/frames").SaveConfirm;
 
 describe("ZtcReader", function () {
     var fixture,
@@ -28,11 +29,11 @@ describe("ZtcReader", function () {
 
     describe("#message event", function () {
         it("should raise a message event when a valid buffer is available.", function (done) {
-            var buffer = new Buffer([0x02, 0x50, 0x01, 0x01, 0x27, 0x77]);
+            var buffer = new Buffer([0x02, 0xA4, 0xE4, 0x01, 0x00, 0x41]);
 
             fixture.once("frame", function (message) {
                 expect(message).to.not.be.undefined;
-                expect(message).to.be.instanceof(ZtcFrame);
+                expect(message).to.be.instanceof(SaveConfirm);
                 done();
             });
 
