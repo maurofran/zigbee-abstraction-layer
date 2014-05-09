@@ -1,5 +1,5 @@
 /*
- * cleardevicekeyparisetconfirm-spec.js
+ * confirmidreport-spec.js
  * https://github.com/maurofranceschini/zigbee-abstraction-layer
  *
  * (C) 2014-2014 Mauro Franceschini
@@ -14,13 +14,13 @@ var chai = require("chai"),
     expect = chai.expect,
     ZtcParser = require("../../../../lib/ztc/ztcparser");
 
-describe("APS.ClearDeviceKeyPairSet.Confirm", function () {
+describe("APS.ConfirmId.Report", function () {
     it("should read from a buffer", function (done) {
         var parser = new ZtcParser();
         parser.ztcFrame("frame").tap(function () {
-            expect(this.vars.frame.apsSetStatus).to.be.equal(0x00);
+            expect(this.vars.frame.assignedConfirmId).to.be.equal(0x4e);
             done();
         });
-        parser.write(new Buffer([0x02, 0xA4, 0x3F, 0x01, 0x00, 0x00]));
+        parser.write(new Buffer([0x02, 0x9D, 0x03, 0x01, 0x4e, 0x00]));
     });
 });
