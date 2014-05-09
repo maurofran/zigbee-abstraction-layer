@@ -12,7 +12,7 @@
 
 var chai = require("chai"),
     expect = chai.expect,
-    through = require("through"),
+    WritableStream = require("memory-streams").WritableStream,
     ZtcWriter = require("../../lib/ztc/ztcwriter"),
     ReadSAS = require("../../lib/ztc/frames/readsas");
 
@@ -21,7 +21,7 @@ describe("ZtcWriter", function () {
         ztcStream;
 
     beforeEach(function () {
-        ztcStream = through().pause();
+        ztcStream = new WritableStream();
         fixture = new ZtcWriter(ztcStream);
     });
 
@@ -32,12 +32,10 @@ describe("ZtcWriter", function () {
 
             fixture.writeFrame(frame);
 
-            ztcStream.on("data", function (data) {
-                expect(data).to.be.deep.equal(expected);
+            process.nextTick(function () {
+                expect(ztcStream.toBuffer()).to.be.deep.equal(expected);
                 done();
             });
-
-            ztcStream.resume();
         });
     });
 });
