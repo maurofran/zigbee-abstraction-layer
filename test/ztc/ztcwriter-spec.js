@@ -14,7 +14,7 @@ var chai = require("chai"),
     expect = chai.expect,
     WritableStream = require("memory-streams").WritableStream,
     ZtcWriter = require("../../lib/ztc/ztcwriter"),
-    ReadSAS = require("../../lib/ztc/frames/readsas");
+    ReadSAS = require("../../lib/ztc/frames/ztc/readsas");
 
 describe("ZtcWriter", function () {
     var fixture,

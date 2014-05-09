@@ -16,7 +16,7 @@ var chai = require("chai"),
     through = require("through"),
     ZtcReader = require("../../lib/ztc/ztcreader"),
     ZtcFrame = require("../../lib/ztc/ztcframe"),
-    SaveConfirm = require("../../lib/ztc/frames").SaveConfirm;
+    SaveConfirm = require("../../lib/ztc/frames").ZTC.SaveConfirm;
 
 describe("ZtcReader", function () {
     var fixture,
