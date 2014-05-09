@@ -60,5 +60,21 @@ describe("ZtcStream", function () {
                 done();
             });
         });
+
+        it("should calculate and write the checksum on two consecutive packets.", function (done) {
+            var reader = new ReadableStream(new Buffer([0x27, 0x45, 0x02, 0x50, 0x02, 0x01, 0x01, 0x02, 0x50]));
+            var writer = new WritableStream();
+            reader.pipe(fixture).pipe(writer);
+            process.nextTick(function () {
+                expect(writer.toBuffer()).to.be.deep.equal(new Buffer([0x02, 0x50, 0x02, 0x01, 0x01, 0x52,
+                                                                       0x02, 0x50]));
+                reader.append(new Buffer([0x02, 0x01, 0x01]));
+                process.nextTick(function () {
+                    expect(writer.toBuffer()).to.be.deep.equal(new Buffer([0x02, 0x50, 0x02, 0x01, 0x01, 0x52,
+                                                                           0x02, 0x50, 0x02, 0x01, 0x01, 0x52]));
+                    done();
+                });
+            });
+        });
     });
 });
