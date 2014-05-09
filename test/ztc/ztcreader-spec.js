@@ -64,7 +64,7 @@ describe("ZtcReader", function () {
     });
 
     describe("#error event", function () {
-        it("should raise an error event when a buffer with invalid checksum is available.", function (done) {
+        it("should raise no event when a buffer with invalid checksum is available.", function (done) {
             var buffer = new Buffer([0x02, 0x50, 0x01, 0x01, 0x27, 0x32]);
 
             fixture.once("frame", function () {
@@ -72,12 +72,13 @@ describe("ZtcReader", function () {
                 done();
             });
 
-            fixture.once("error", function (err) {
-                expect(err).to.not.be.null;
-                done();
+            fixture.once("error", function () {
+                assert.fail();
             });
 
             ztcStream.queue(buffer).resume();
+
+            process.nextTick(done);
         });
     });
 });
