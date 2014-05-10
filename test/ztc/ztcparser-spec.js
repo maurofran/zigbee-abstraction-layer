@@ -12,6 +12,7 @@
 
 var chai = require("chai"),
     expect = chai.expect,
+    moment = require("moment"),
     ZtcParser = require("../../lib/ztc/ztcparser"),
     datatypes = require("../../lib/ztc/datatypes");
 
@@ -20,6 +21,21 @@ describe("ZtcParser", function () {
 
     beforeEach(function () {
         fixture = new ZtcParser();
+    });
+
+    describe("#moment(name)", function () {
+        it("Should create a moment instance variable and return this.", function (done) {
+            fixture.moment("time").tap(function () {
+                this.push(this.vars);
+            });
+            fixture.on("readable", function () {
+                var data = fixture.read();
+                expect(data).to.contain.keys(["time"]);
+                expect(moment.isMoment(data.time)).to.be.true;
+                done();
+            });
+            fixture.end(new Buffer([0x05, 0x43, 0x27, 0x98]));
+        })
     });
 
     describe("#shortAddress(name)", function () {

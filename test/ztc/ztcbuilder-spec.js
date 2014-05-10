@@ -12,6 +12,7 @@
 
 var chai = require("chai"),
     expect = chai.expect,
+    moment = require("moment"),
     ZtcBuilder = require("../../lib/ztc/ztcbuilder"),
     datatypes = require("../../lib/ztc/datatypes"),
     ShortAddress = datatypes.ShortAddress,
@@ -24,6 +25,18 @@ describe("ZtcBuilder", function () {
 
     beforeEach(function () {
         fixture = new ZtcBuilder();
+    });
+
+    describe("#time(moment)", function () {
+        it("Should write a moment object and return this.", function () {
+            var time = moment([2000, 0, 1, 0, 0, 32, 0]);
+
+            var buffer = fixture.time(time).result();
+
+            expect(buffer).is.not.null;
+            expect(buffer).to.have.length(4);
+            expect(buffer).to.deep.equal(new Buffer([0x20, 0x00, 0x00, 0x00]));
+        });
     });
 
     describe("#shortAddress(shortAddress)", function () {
