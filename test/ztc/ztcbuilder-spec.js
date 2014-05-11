@@ -27,15 +27,25 @@ describe("ZtcBuilder", function () {
         fixture = new ZtcBuilder();
     });
 
-    describe("#time(moment)", function () {
+    describe("#moment(moment)", function () {
         it("Should write a moment object and return this.", function () {
             var time = moment([2000, 0, 1, 0, 0, 32, 0]);
 
-            var buffer = fixture.time(time).result();
+            var buffer = fixture.moment(time).result();
 
             expect(buffer).is.not.null;
             expect(buffer).to.have.length(4);
             expect(buffer).to.deep.equal(new Buffer([0x20, 0x00, 0x00, 0x00]));
+        });
+    });
+
+    describe("#boolean(value)", function () {
+        it("Should write a boolean object and return this.", function () {
+            var buffer = fixture.boolean(true).result();
+
+            expect(buffer).is.not.null;
+            expect(buffer).to.have.length(1);
+            expect(buffer).to.deep.equal(new Buffer([0x01]));
         });
     });
 

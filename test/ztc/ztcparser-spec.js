@@ -35,7 +35,22 @@ describe("ZtcParser", function () {
                 done();
             });
             fixture.end(new Buffer([0x05, 0x43, 0x27, 0x98]));
-        })
+        });
+    });
+
+    describe("#boolean(name)", function () {
+        it("Should create a boolean variable and return this.", function (done) {
+            fixture.boolean("value").tap(function () {
+                this.push(this.vars);
+            });
+            fixture.on("readable", function () {
+                var data = fixture.read();
+                expect(data).to.contain.keys(["value"]);
+                expect(this.vars.value).to.be.true;
+                done();
+            });
+            fixture.end(new Buffer([0x01]));
+        });
     });
 
     describe("#shortAddress(name)", function () {
