@@ -73,4 +73,25 @@ describe("APS", function () {
             parser.write(new Buffer([0x02, 0x9D, 0x02, 0x06, 0x02, 0x01, 0x03, 0x43, 0x56, 0x79, 0x00]));
         });
     });
+
+    describe("APS.DeregisterEndpoint.Request", function () {
+        it("should write a buffer", function () {
+            var builder = new ZtcBuilder();
+            var request = new APS.DeregisterEndpoint.Request(0x02);
+            request.write(builder);
+            expect(builder.result()).to.be.deep.equal(
+                new Buffer([0x02, 0xA3, 0x0A, 0x01, 0x02]));
+        });
+    });
+
+    describe("APS.DeregisterEndpoint.Confirm", function () {
+        it("should read from a buffer", function (done) {
+            var parser = new ZtcParser();
+            parser.ztcFrame("frame").tap(function () {
+                expect(this.vars.frame.status).to.be.equal(0x00);
+                done();
+            });
+            parser.write(new Buffer([0x02, 0xA4, 0x0A, 0x01, 0x00, 0x00]));
+        });
+    });
 });
