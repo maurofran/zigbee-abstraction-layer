@@ -25,11 +25,32 @@ module.exports = function (grunt) {
                 node: true
             },
             all: ["Gruntfile.js", "lib/**/*.js", "test/**/*.js"]
+        },
+        coffee: {
+            sources: {
+                expand: true,
+                flatten: false,
+                sourceMap: true,
+                cwd: "src",
+                src: ["**/*.coffee"],
+                dest: "lib/",
+                ext: ".js"
+            },
+            tests: {
+                expand: true,
+                flatten: false,
+                sourceMap: true,
+                cwd: "test-src",
+                src: ["**/*-spec.coffee"],
+                dest: "test/",
+                ext: ".js"
+            }
         }
     });
 
     grunt.loadNpmTasks("grunt-mocha-test");
     grunt.loadNpmTasks("grunt-contrib-jshint");
+    grunt.loadNpmTasks("grunt-contrib-coffee");
 
-    grunt.registerTask("default", ["jshint", "mochaTest"]);
+    grunt.registerTask("default", ["coffee", "mochaTest"]);
 };
