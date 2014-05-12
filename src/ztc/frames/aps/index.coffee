@@ -30,3 +30,6 @@ module.exports =
   GetEPMaxWindowSize:
     Request: require "./get-ep-max-window-size-request"
     Confirm: require "./get-ep-max-window-size-confirm"
+  GetMaxApplicationPaylod:
+    Request: require "./get-max-application-payload-request"
+    Confirm: require "./get-max-application-payload-confirm"

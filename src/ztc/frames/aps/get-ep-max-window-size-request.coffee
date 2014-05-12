@@ -8,17 +8,17 @@
 
 ZtcFrame = require "../../ztc-frame"
 
-class GetEPMaxWindowSize extends ZtcFrame
+class GetEPMaxWindowSizeRequest extends ZtcFrame
   @OPCODE_GROUP = 0xA3
   @OPCODE = 0x09
 
   constructor: (@number) ->
-    super GetEPMaxWindowSize.OPCODE_GROUP, GetEPMaxWindowSize.OPCODE
+    super GetEPMaxWindowSizeRequest.OPCODE_GROUP, GetEPMaxWindowSizeRequest.OPCODE
 
   _writePayload: (builder) ->
     builder.uint8 1
     builder.uint8 @number
 
-ZtcFrame.registerFrame GetEPMaxWindowSize
+ZtcFrame.registerFrame GetEPMaxWindowSizeRequest
 
-module.exports = GetEPMaxWindowSize
+module.exports = GetEPMaxWindowSizeRequest
