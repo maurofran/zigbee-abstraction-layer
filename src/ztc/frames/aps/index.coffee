@@ -18,3 +18,9 @@ module.exports =
   DeregisterEndpoint:
     Request: require "./deregister-endpoint-request"
     Confirm: require "./deregister-endpoint-confirm"
+  GetDeviceKeyPairSet:
+    Request: require "./get-device-key-pair-set-request"
+    Confirm: require "./get-device-key-pair-set-confirm"
+  GetEndpointDescription:
+    Request: require "./get-endpoint-description-request"
+    Confirm: require "./get-endpoint-description-confirm"

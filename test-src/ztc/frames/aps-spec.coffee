@@ -8,7 +8,7 @@
 {expect} = require "chai"
 ZtcParser = require "../../../lib/ztc/ztc-parser"
 ZtcBuilder = require "../../../lib/ztc/ztc-builder"
-{IEEEAddress} = require "../../../lib/ztc/datatypes"
+{IEEEAddress, Key} = require "../../../lib/ztc/datatypes"
 APS = require("../../../lib/ztc/frames").APS;
 
 describe "APS", () ->
@@ -82,3 +82,65 @@ describe "APS", () ->
           expect(this.vars.frame.status).to.be.equal 0x00
           done()
         parser.write new Buffer([0x02, 0xA4, 0x0A, 0x01, 0x00, 0x00])
+
+  describe "GetDeviceKeyPairSet", () ->
+    describe "Request", () ->
+      it "should write a buffer", () ->
+        builder = new ZtcBuilder
+        request = new APS.GetDeviceKeyPairSet.Request new IEEEAddress("00005E0000000001")
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0xA3, 0x3B, 0x08,
+                                                              0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01])
+
+    describe "Confirm", () ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap () ->
+          expect(@vars.frame).to.be.instanceof APS.GetDeviceKeyPairSet.Confirm
+          expect(@vars.frame.ieeeAddress).to.be.deep.equal new IEEEAddress("00005E0000000001")
+          expect(@vars.frame.apsKeyType).to.be.equal 0x00
+          expect(@vars.frame.incomingFrameCounter).to.be.equal 0x00000134
+          expect(@vars.frame.outgoingFrameCounter).to.be.equal 0x00023560
+          expect(@vars.frame.apsDeviceKey).to.be.deep.equal new Key("00000000000000001111111122222222")
+          done()
+        parser.write new Buffer([0x02, 0xA4, 0x3B, 0x21,
+                                 0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01,
+                                 0x00,
+                                 0x34, 0x01, 0x00, 0x00,
+                                 0x60, 0x35, 0x02, 0x00,
+                                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                 0x11, 0x11, 0x11, 0x11, 0x22, 0x22, 0x22, 0x22,
+                                 0x00])
+
+  describe "GetEndpointDescription", () ->
+    describe "Request", () ->
+      it "should write a buffer", () ->
+        builder = new ZtcBuilder
+        request = new APS.GetEndpointDescription.Request 0x23
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0xA3, 0x0D, 0x01, 0x23])
+
+    describe "Confirm", () ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap () ->
+          expect(@vars.frame).to.be.instanceof APS.GetEndpointDescription.Confirm
+          expect(@vars.frame.status).to.be.deep.equal 0x00
+          expect(@vars.frame.endpoint).to.be.equal 0x23
+          expect(@vars.frame.applicationProfileId).to.be.equal 0x33
+          expect(@vars.frame.applicationDeviceId).to.be.equal 0x12
+          expect(@vars.frame.applicationDeviceAndVersionFlags).to.be.equal 0x02
+          expect(@vars.frame.inClusters).to.be.deep.equal [0x0032, 0x0135]
+          expect(@vars.frame.outClusters).to.be.deep.equal [0x1423, 0x4450, 0x9081]
+          done()
+        parser.write new Buffer([0x02, 0xA4, 0x0D, 0x13,
+                                 0x00,
+                                 0x23,
+                                 0x33, 0x00,
+                                 0x12, 0x00
+                                 0x02,
+                                 0x02, 0x32, 0x00, 0x35, 0x01
+                                 0x03, 0x23, 0x14, 0x50, 0x44, 0x81, 0x90
+                                 0x00])
