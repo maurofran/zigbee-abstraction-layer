@@ -144,3 +144,26 @@ describe "APS", () ->
                                  0x02, 0x32, 0x00, 0x35, 0x01
                                  0x03, 0x23, 0x14, 0x50, 0x44, 0x81, 0x90
                                  0x00])
+
+  describe "GetEndpointIdList", () ->
+    describe "Request", () ->
+      it "should write a buffer", () ->
+        builder = new ZtcBuilder
+        request = new APS.GetEndpointIdList.Request
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0xA3, 0x0E, 0x00])
+
+    describe "Confirm", () ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap () ->
+          expect(@vars.frame).to.be.instanceof APS.GetEndpointIdList.Confirm
+          expect(@vars.frame.status).to.be.deep.equal 0x00
+          expect(@vars.frame.endpointList).to.be.deep.equal [0x33, 0x12]
+          done()
+        parser.write new Buffer([0x02, 0xA4, 0x0E, 0x04,
+                                 0x00,
+                                 0x02,
+                                 0x33, 0x12,
+                                 0x00])

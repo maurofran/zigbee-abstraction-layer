@@ -24,3 +24,6 @@ module.exports =
   GetEndpointDescription:
     Request: require "./get-endpoint-description-request"
     Confirm: require "./get-endpoint-description-confirm"
+  GetEndpointIdList:
+    Request: require "./get-endpoint-id-list-request"
+    Confirm: require "./get-endpoint-id-list-confirm"
