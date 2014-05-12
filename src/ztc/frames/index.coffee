@@ -6,4 +6,5 @@
   Released under Apache 2 License.
 ###
 module.exports =
+  APS: require "./aps"
   ZTC: require "./ztc"
