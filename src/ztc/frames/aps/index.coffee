@@ -36,3 +36,6 @@ module.exports =
   GetNumberOfEndpoints:
     Request: require "./get-number-of-endpoints-request"
     Confirm: require "./get-number-of-endpoints-confirm"
+  LoadFragment:
+    Request: require "./load-fragment-request"
+    Confirm: require "./load-fragment-confirm"

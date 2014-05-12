@@ -231,3 +231,21 @@ describe "APS", () ->
           expect(@vars.frame.activeEndpoints).to.be.equal 0x02
           done()
         parser.write new Buffer([0x02, 0xA4, 0x0C, 0x02, 0x00, 0x02, 0x00])
+
+  describe "LoadFragment", () ->
+    describe "Request", () ->
+      it "should write a buffer", () ->
+        builder = new ZtcBuilder
+        request = new APS.LoadFragment.Request new Buffer([0x01, 0x02, 0x03])
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0x9C, 0x11, 0x04, 0x03, 0x01, 0x02, 0x03])
+
+    describe "Confirm", () ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap () ->
+          expect(@vars.frame).to.be.instanceof APS.LoadFragment.Confirm
+          expect(@vars.frame.status).to.be.equal 0x00
+          done()
+        parser.write new Buffer([0x02, 0x9D, 0x11, 0x01, 0x00, 0x00])
