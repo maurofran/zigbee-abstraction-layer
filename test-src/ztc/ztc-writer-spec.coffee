@@ -8,7 +8,7 @@
 {expect} = require "chai"
 {WritableStream} = require "memory-streams"
 ZtcWriter = require "../../lib/ztc/ztc-writer"
-ReadSAS = require "../../lib/ztc/frames/ztc/readsas"
+ReadSAS = require "../../lib/ztc/frames/ztc/read-sas-request"
 
 describe "ZtcWriter", () ->
   fixture = null

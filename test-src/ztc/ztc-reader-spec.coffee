@@ -10,7 +10,7 @@
 through = require "through"
 ZtcReader = require "../../lib/ztc/ztc-reader"
 ZtcFrame = require "../../lib/ztc/ztc-frame"
-SaveConfirm = require "../../lib/ztc/frames/ztc/saveconfirm"
+SaveConfirm = require "../../lib/ztc/frames/ztc/save-confirm"
 
 describe "ZtcReader", () ->
   fixture = null

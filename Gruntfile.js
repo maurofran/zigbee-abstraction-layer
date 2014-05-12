@@ -30,7 +30,6 @@ module.exports = function (grunt) {
             sources: {
                 expand: true,
                 flatten: false,
-                sourceMap: true,
                 cwd: "src",
                 src: ["**/*.coffee"],
                 dest: "lib/",
@@ -39,7 +38,6 @@ module.exports = function (grunt) {
             tests: {
                 expand: true,
                 flatten: false,
-                sourceMap: true,
                 cwd: "test-src",
                 src: ["**/*-spec.coffee"],
                 dest: "test/",

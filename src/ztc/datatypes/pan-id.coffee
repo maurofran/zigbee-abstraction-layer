@@ -6,15 +6,21 @@
   Release under Apache 2 License.
 ###
 
+_ = require "lodash"
+
 class PANId
-  @LENGTH = 8
+  @LENGTH = 2
 
   # Creates a new PANId.
   #
   # @param [Buffer] buffer the buffer
   constructor: (@buffer) ->
+    @buffer = new Buffer @buffer, "hex" if _.isString @buffer
 
   asBuffer: () ->
     @buffer
+
+  toHexString: () ->
+    @buffer.toString "hex"
 
 module.exports = PANId
