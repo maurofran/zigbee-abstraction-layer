@@ -33,3 +33,6 @@ module.exports =
   GetMaxApplicationPaylod:
     Request: require "./get-max-application-payload-request"
     Confirm: require "./get-max-application-payload-confirm"
+  GetNumberOfEndpoints:
+    Request: require "./get-number-of-endpoints-request"
+    Confirm: require "./get-number-of-endpoints-confirm"

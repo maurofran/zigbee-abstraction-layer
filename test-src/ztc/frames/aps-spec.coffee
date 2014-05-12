@@ -212,3 +212,22 @@ describe "APS", () ->
           expect(@vars.frame.maxPayload).to.be.equal 0x59
           done()
         parser.write new Buffer([0x02, 0xA4, 0x27, 0x01, 0x59, 0x00])
+
+  describe "GetNumberOfEndpoints", () ->
+    describe "Request", () ->
+      it "should write a buffer", () ->
+        builder = new ZtcBuilder
+        request = new APS.GetNumberOfEndpoints.Request
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0xA3, 0x0C, 0x00])
+
+    describe "Confirm", () ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap () ->
+          expect(@vars.frame).to.be.instanceof APS.GetNumberOfEndpoints.Confirm
+          expect(@vars.frame.status).to.be.equal 0x00
+          expect(@vars.frame.activeEndpoints).to.be.equal 0x02
+          done()
+        parser.write new Buffer([0x02, 0xA4, 0x0C, 0x02, 0x00, 0x02, 0x00])
