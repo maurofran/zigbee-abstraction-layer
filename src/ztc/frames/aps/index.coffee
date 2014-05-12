@@ -27,3 +27,6 @@ module.exports =
   GetEndpointIdList:
     Request: require "./get-endpoint-id-list-request"
     Confirm: require "./get-endpoint-id-list-confirm"
+  GetEPMaxWindowSize:
+    Request: require "./get-ep-max-window-size-request"
+    Confirm: require "./get-ep-max-window-size-confirm"

@@ -167,3 +167,25 @@ describe "APS", () ->
                                  0x02,
                                  0x33, 0x12,
                                  0x00])
+
+  describe "GetEPMaxWindowSize", () ->
+    describe "Request", () ->
+      it "should write a buffer", () ->
+        builder = new ZtcBuilder
+        request = new APS.GetEPMaxWindowSize.Request 0x02
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0xA3, 0x09, 0x01, 0x02])
+
+    describe "Confirm", () ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap () ->
+          expect(@vars.frame).to.be.instanceof APS.GetEPMaxWindowSize.Confirm
+          expect(@vars.frame.status).to.be.deep.equal 0x00
+          expect(@vars.frame.windowSize).to.be.equal 0x12
+          done()
+        parser.write new Buffer([0x02, 0xA4, 0x09, 0x02,
+                                 0x00,
+                                 0x12,
+                                 0x00])
