@@ -55,6 +55,13 @@ describe "ZtcBuilder", () ->
       expect(buffer).to.have.length 8
       expect(buffer).to.deep.equal ieeeAddress.asBuffer()
 
+    it "Should write an empty IEEE address object and return this.", () ->
+      buffer = fixture.ieeeAddress(null).result()
+
+      expect(buffer).is.not.null
+      expect(buffer).to.have.length 8
+      expect(buffer).to.deep.equal IEEEAddress.EMPTY_ADDRESS.asBuffer()
+
   describe "#panId(panId)", () ->
     it "Should write a PANId object and return this.", () ->
       panId = new PANId new Buffer("12345678")

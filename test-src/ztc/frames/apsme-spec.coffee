@@ -14,6 +14,7 @@ ZtcBuilder = require "../../../lib/ztc/ztc-builder"
 APSME = require("../../../lib/ztc/frames").APSME;
 
 describe "APSME", () ->
+
   describe "AddGroup", () ->
     describe "Request", () ->
       it "should write a buffer", () ->
@@ -114,4 +115,54 @@ describe "APSME", () ->
                                  0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x02,
                                  0x03,
                                  0x00])
+
+  describe "EstablishKey", () ->
+    describe "Request", () ->
+      it "should write a buffer", () ->
+        builder = new ZtcBuilder
+        request = new APSME.EstablishKey.Request new IEEEAddress("00005E0000000001"), false, null,
+                                                 APSME.EstablishKey.Request.Method.SKKE
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0x99, 0xCF, 0x12,
+                                                              0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01,
+                                                              0x00,
+                                                              0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                                              0x00])
+
+    describe "Confirm", () ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap () ->
+          expect(@vars.frame).to.be.instanceof APSME.EstablishKey.Confirm
+          expect(@vars.frame.address).to.be.deep.equal new IEEEAddress("00005E0000000001")
+          expect(@vars.frame.status).to.be.equal 0x00
+          done()
+        parser.write new Buffer([0x02, 0x98, 0xD5, 0x09,
+                                 0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01,
+                                 0x00,
+                                 0x00])
+
+    describe "Indication", () ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap () ->
+          expect(@vars.frame).to.be.instanceof APSME.EstablishKey.Indication
+          expect(@vars.frame.initiatorAddress).to.be.deep.equal new IEEEAddress("00005E0000000001")
+          expect(@vars.frame.method).to.be.equal APSME.EstablishKey.Indication.Method.SKKE
+          done()
+        parser.write new Buffer([0x02, 0x98, 0xD6, 0x09,
+                                 0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01,
+                                 0x00,
+                                 0x00])
+
+    describe "Response", () ->
+      it "should write a buffer", () ->
+        builder = new ZtcBuilder
+        request = new APSME.EstablishKey.Response new IEEEAddress("00005E0000000001"), true
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0x99, 0xD0, 0x09,
+                                                              0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01,
+                                                              0x01])
 

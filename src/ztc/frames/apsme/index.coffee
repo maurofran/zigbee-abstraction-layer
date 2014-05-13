@@ -17,3 +17,8 @@ module.exports =
   Bind:
     Request: require "./bind-request"
     Confirm: require "./bind-confirm"
+  EstablishKey:
+    Request: require "./establish-key-request"
+    Confirm: require "./establish-key-confirm"
+    Indication: require "./establish-key-indication"
+    Response: require "./establish-key-response"

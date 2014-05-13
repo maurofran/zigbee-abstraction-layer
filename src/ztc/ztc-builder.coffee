@@ -9,6 +9,7 @@
 
 Concentrate = require "concentrate"
 moment = require "moment"
+{IEEEAddress} = require "./datatypes"
 
 class ZtcBuilder extends Concentrate
   # Writes a ZTC frame object.
@@ -43,7 +44,7 @@ class ZtcBuilder extends Concentrate
   #
   # @param [IEEEAddress] ieeeAddress the address to write
   # @returns [ZtcBuilder] this
-  ieeeAddress: (ieeeAddress) ->
+  ieeeAddress: (ieeeAddress = IEEEAddress.EMPTY_ADDRESS) ->
     @buffer ieeeAddress.asBuffer()
 
   # Writes a PANId object.
