@@ -40,4 +40,6 @@ module.exports =
   Reset:
     Request: require "./reset-request"
     Confirm: require "./reset-confirm"
-
+  Set:
+    Request: require "./set-request"
+    Confirm: require "./set-confirm"
