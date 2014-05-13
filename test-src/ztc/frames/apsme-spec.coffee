@@ -310,7 +310,6 @@ describe "APSME", () ->
           done()
         parser.write new Buffer([0x02, 0x98, 0x0B, 0x01, 0x00, 0x00])
 
-
   describe "Set", () ->
     describe "Request", () ->
       it "id SAS_APS_TC_MASTER_KEY should write a buffer", () ->
@@ -484,3 +483,27 @@ describe "APSME", () ->
           expect(@vars.frame.status).to.be.equal APSME.Set.Confirm.Status.SUCCESS
           done()
         parser.write new Buffer([0x02, 0xA4, 0x21, 0x01, 0x00, 0x00])
+
+  describe "SwitchKey", () ->
+    describe "Request", () ->
+      it "should write a buffer", () ->
+        builder = new ZtcBuilder
+        request = new APSME.SwitchKey.Request new IEEEAddress("00005E0000000001"), 0x23
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0x99, 0xD4, 0x09,
+                                                              0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01,
+                                                              0x23])
+
+    describe "Indication", () ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap () ->
+          expect(@vars.frame).to.be.instanceof APSME.SwitchKey.Indication
+          expect(@vars.frame.srcAddress).to.be.deep.equal new IEEEAddress("00005E0000000001")
+          expect(@vars.frame.keySeqNumber).to.be.deep.equal 0x27
+          done()
+        parser.write new Buffer([0x02, 0x98, 0xF1, 0x09,
+                                 0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01,
+                                 0x27,
+                                 0x00])

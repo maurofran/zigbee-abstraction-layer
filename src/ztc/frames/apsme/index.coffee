@@ -43,3 +43,6 @@ module.exports =
   Set:
     Request: require "./set-request"
     Confirm: require "./set-confirm"
+  SwitchKey:
+    Request: require "./switch-key-request"
+    Indication: require "./switch-key-indication"
