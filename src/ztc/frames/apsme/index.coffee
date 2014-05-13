@@ -34,3 +34,10 @@ module.exports =
   RemoveGroup:
     Request: require "./remove-group-request"
     Confirm: require "./remove-group-confirm"
+  RequestKey:
+    Request: require "./request-key-request"
+    Indication: require "./request-key-indication"
+  Reset:
+    Request: require "./reset-request"
+    Confirm: require "./reset-confirm"
+
