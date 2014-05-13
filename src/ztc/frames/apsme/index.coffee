@@ -14,3 +14,6 @@ module.exports =
     Request: require "./authenticate-request"
     Confirm: require "./authenticate-confirm"
     Indication: require "./authenticate-indication"
+  Bind:
+    Request: require "./bind-request"
+    Confirm: require "./bind-confirm"

@@ -75,3 +75,43 @@ describe "APSME", () ->
                                  0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF,
                                  0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF,
                                  0x00])
+
+  describe "Bind", () ->
+    describe "Request", () ->
+      it "should write a buffer", () ->
+        builder = new ZtcBuilder
+        request = new APSME.Bind.Request new IEEEAddress("00005E0000000001"), 0x01, 0x1234,
+                                         0x27, new IEEEAddress("00005E0000000002"), 0x03
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0x99, 0x00, 0x15,
+                                                              0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01,
+                                                              0x01,
+                                                              0x34, 0x12,
+                                                              0x27,
+                                                              0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x02,
+                                                              0x03])
+
+    describe "Confirm", () ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap () ->
+          expect(@vars.frame).to.be.instanceof APSME.Bind.Confirm
+          expect(@vars.frame.status).to.be.equal 0x00
+          expect(@vars.frame.srcAddress).to.be.deep.equal new IEEEAddress("00005E0000000001")
+          expect(@vars.frame.srcEndpoint).to.be.equal 0x02
+          expect(@vars.frame.clusterId).to.be.equal 0x1234
+          expect(@vars.frame.dstAddrMode).to.be.equal 0x27
+          expect(@vars.frame.dstAddress).to.be.deep.equal new IEEEAddress("00005E0000000002")
+          expect(@vars.frame.dstEndpoint).to.be.equal 0x03
+          done()
+        parser.write new Buffer([0x02, 0x98, 0x07, 0x16,
+                                 0x00,
+                                 0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01,
+                                 0x02,
+                                 0x34, 0x12,
+                                 0x27,
+                                 0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x02,
+                                 0x03,
+                                 0x00])
+
