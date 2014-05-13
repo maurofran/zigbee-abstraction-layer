@@ -197,3 +197,68 @@ describe "APSME", () ->
                                  0x03, 0x00,
                                  0x01, 0x02, 0x03,
                                  0x00])
+
+  describe "RemoveAllGroups", () ->
+    describe "Request", () ->
+      it "should write a buffer", () ->
+        builder = new ZtcBuilder
+        request = new APSME.RemoveAllGroups.Request 0x29
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0x99, 0xEA, 0x01, 0x29])
+
+    describe "Confirm", () ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap () ->
+          expect(@vars.frame).to.be.instanceof APSME.RemoveAllGroups.Confirm
+          expect(@vars.frame.status).to.be.equal APSME.RemoveAllGroups.Confirm.Status.SUCCESS
+          expect(@vars.frame.endpoint).to.be.equal 0x29
+          done()
+        parser.write new Buffer([0x02, 0x98, 0xEA, 0x02, 0x00, 0x29, 0x00])
+
+  describe "RemoveDevice", () ->
+    describe "Request", () ->
+      it "should write a buffer", () ->
+        builder = new ZtcBuilder
+        request = new APSME.RemoveDevice.Request new IEEEAddress("00005E0000000001"),
+                                                 new IEEEAddress("00005E0000000002")
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0x99, 0xF4, 0x10,
+                                                              0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01,
+                                                              0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x02])
+
+    describe "Indication", () ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap () ->
+          expect(@vars.frame).to.be.instanceof APSME.RemoveDevice.Indication
+          expect(@vars.frame.srcAddress).to.be.deep.equal new IEEEAddress("00005E0000000001")
+          expect(@vars.frame.childAddress).to.be.deep.equal new IEEEAddress("00005E0000000002")
+          done()
+        parser.write new Buffer([0x02, 0x98, 0xD8, 0x10,
+                                 0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01,
+                                 0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x02,
+                                 0x00])
+
+  describe "RemoveGroup", () ->
+    describe "Request", () ->
+      it "should write a buffer", () ->
+        builder = new ZtcBuilder
+        request = new APSME.RemoveGroup.Request new ShortAddress("5E01"), 0x27
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0x99, 0xE9, 0x03,
+                                                              0x5E, 0x01, 0x27])
+
+    describe "Confirm", () ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap () ->
+          expect(@vars.frame).to.be.instanceof APSME.RemoveGroup.Confirm
+          expect(@vars.frame.status).to.be.equal APSME.RemoveGroup.Confirm.Status.SUCCESS
+          expect(@vars.frame.groupId).to.be.deep.equal new ShortAddress("5E01")
+          expect(@vars.frame.endpoint).to.be.equal 0x27
+          done()
+        parser.write new Buffer([0x02, 0x98, 0xE9, 0x04, 0x00, 0x5E, 0x01, 0x27, 0x00])

@@ -25,3 +25,12 @@ module.exports =
   Get:
     Request: require "./get-request"
     Confirm: require "./get-confirm"
+  RemoveAllGroups:
+    Request: require "./remove-all-groups-request"
+    Confirm: require "./remove-all-groups-confirm"
+  RemoveDevice:
+    Request: require "./remove-device-request"
+    Indication: require "./remove-device-indication"
+  RemoveGroup:
+    Request: require "./remove-group-request"
+    Confirm: require "./remove-group-confirm"
