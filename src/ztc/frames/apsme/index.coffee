@@ -22,3 +22,6 @@ module.exports =
     Confirm: require "./establish-key-confirm"
     Indication: require "./establish-key-indication"
     Response: require "./establish-key-response"
+  Get:
+    Request: require "./get-request"
+    Confirm: require "./get-confirm"

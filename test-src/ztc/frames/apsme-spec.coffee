@@ -166,3 +166,34 @@ describe "APSME", () ->
                                                               0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01,
                                                               0x01])
 
+  describe "Get", () ->
+    describe "Request", () ->
+      it "should write a buffer", () ->
+        builder = new ZtcBuilder
+        request = new APSME.Get.Request APSME.Get.Request.Id.APS_ADDRESS_MAP, 1, 2, 0
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0xA3, 0x20, 0x04,
+                                                              0xC0, 0x01, 0x02, 0x00])
+
+    describe "Confirm", () ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap () ->
+          expect(@vars.frame).to.be.instanceof APSME.Get.Confirm
+          expect(@vars.frame.status).to.be.equal APSME.Get.Confirm.Status.SUCCESS
+          expect(@vars.frame.id).to.be.equal APSME.Get.Confirm.Id.APS_ADDRESS_MAP
+          expect(@vars.frame.index).to.be.equal 1
+          expect(@vars.frame.entries).to.be.equal 1
+          expect(@vars.frame.entrySize).to.be.equal 3
+          expect(@vars.frame.data).to.be.deep.equal new Buffer("010203", "hex")
+          done()
+        parser.write new Buffer([0x02, 0xA4, 0x20, 0x0A,
+                                 0x00,
+                                 0xC0,
+                                 0x01,
+                                 0x01,
+                                 0x03,
+                                 0x03, 0x00,
+                                 0x01, 0x02, 0x03,
+                                 0x00])
