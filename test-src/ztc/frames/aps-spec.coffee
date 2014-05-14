@@ -249,3 +249,14 @@ describe "APS", () ->
           expect(@vars.frame.status).to.be.equal 0x00
           done()
         parser.write new Buffer([0x02, 0x9D, 0x11, 0x01, 0x00, 0x00])
+
+  describe "ProcessSecureFrame", () ->
+    describe "Report", () ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap () ->
+          expect(@vars.frame).to.be.instanceof APS.ProcessSecureFrame.Report
+          expect(@vars.frame.status).to.be.equal APS.ProcessSecureFrame.Report.Status.SECURITY_FAIL
+          done()
+        parser.write new Buffer([0x02, 0x98, 0xCC, 0x01, 0xA2, 0x00])

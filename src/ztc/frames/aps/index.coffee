@@ -39,3 +39,5 @@ module.exports =
   LoadFragment:
     Request: require "./load-fragment-request"
     Confirm: require "./load-fragment-confirm"
+  ProcessSecureFrame:
+    Report: require "./process-secure-frame-report"
