@@ -305,3 +305,27 @@ describe "APS", () ->
           expect(@vars.frame.data).to.be.deep.equal new Buffer([0x00])
           done()
         parser.write new Buffer([0x02, 0x9D, 0x10, 0x01, 0x00, 0x00])
+
+  describe "SetDeviceKeyPairSet", () ->
+    describe "Request", () ->
+      it "should write a buffer", () ->
+        builder = new ZtcBuilder
+        ieeeAddress = new IEEEAddress "00005E0000000001"
+        key = new Key "00112233445566778899AABBCCDDEEFF"
+        request = new APS.SetDeviceKeyPairSet.Request ieeeAddress, 0x03, key
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0xA3, 0x3E, 0x19,
+                                                              0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01,
+                                                              0x03,
+                                                              0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+                                                              0x88, 0x99, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF])
+
+    describe "Confirm", () ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap () ->
+          expect(@vars.frame).to.be.instanceof APS.SetDeviceKeyPairSet.Confirm
+          expect(@vars.frame.apsSetStatus).to.be.equal APS.SetDeviceKeyPairSet.Confirm.Status.SUCCESS
+          done()
+        parser.write new Buffer([0x02, 0xA4, 0x3E, 0x01, 0x00, 0x00])

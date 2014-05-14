@@ -47,3 +47,6 @@ module.exports =
   ResetFragments:
     Request: require "./reset-fragments-request"
     Confirm: require "./reset-fragments-confirm"
+  SetDeviceKeyPairSet:
+    Request: require "./set-device-key-pair-set-request"
+    Confirm: require "./set-device-key-pair-set-confirm"
