@@ -44,3 +44,6 @@ module.exports =
   RegisterEndpoint:
     Request: require "./register-endpoint-request"
     Confirm: require "./register-endpoint-confirm"
+  ResetFragments:
+    Request: require "./reset-fragments-request"
+    Confirm: require "./reset-fragments-confirm"

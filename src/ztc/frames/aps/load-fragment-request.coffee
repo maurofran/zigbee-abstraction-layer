@@ -8,18 +8,18 @@
 
 ZtcFrame = require "../../ztc-frame"
 
-class GetNumberOfEndpointsRequest extends ZtcFrame
+class LoadFragmentRequest extends ZtcFrame
   @OPCODE_GROUP = 0x9C
   @OPCODE = 0x11
 
   constructor: (@octects) ->
-    super GetNumberOfEndpointsRequest.OPCODE_GROUP, GetNumberOfEndpointsRequest.OPCODE
+    super LoadFragmentRequest.OPCODE_GROUP, LoadFragmentRequest.OPCODE
 
   _writePayload: (builder) ->
     builder.uint8 1+ @octects.length
     builder.uint8 @octects.length
     builder.buffer @octects
 
-ZtcFrame.registerFrame GetNumberOfEndpointsRequest
+ZtcFrame.registerFrame LoadFragmentRequest
 
-module.exports = GetNumberOfEndpointsRequest
+module.exports = LoadFragmentRequest
