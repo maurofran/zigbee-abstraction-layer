@@ -49,3 +49,6 @@ module.exports =
   TransportKey:
     Request: require "./transport-key-request"
     Indication: require "./transport-key-indication"
+  Unbind:
+    Request: require "./unbind-request"
+    Confirm: require "./unbind-confirm"
