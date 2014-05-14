@@ -507,3 +507,179 @@ describe "APSME", () ->
                                  0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01,
                                  0x27,
                                  0x00])
+
+  describe "TransportKey", () ->
+    describe "Request", () ->
+      it "TRUST_CENTER_MASTER_KEY should write a buffer", () ->
+        builder = new ZtcBuilder
+        request = new APSME.TransportKey.Request APSME.TransportKey.Request.KeyType.TRUST_CENTER_MASTER_KEY,
+          destAddress: new IEEEAddress("00005E0000000001")
+          parentAddress: new IEEEAddress("00005E0000000002")
+          tcMasterKey: new Key("00112233445566778899AABBCCDDEEFF")
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0x99, 0xD1, 0x22, 0x00,
+                                                              0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01,
+                                                              0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x02,
+                                                              0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+                                                              0x88, 0x99, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF])
+
+      it "NETWORK_KEY should write a buffer", () ->
+        builder = new ZtcBuilder
+        request = new APSME.TransportKey.Request APSME.TransportKey.Request.KeyType.NETWORK_KEY,
+          destAddress: new IEEEAddress("00005E0000000001")
+          keySeqNumber: 1,
+          networkKey: new Key("00112233445566778899AABBCCDDEEFF")
+          useParent: true
+          parentAddress: new IEEEAddress("00005E0000000002")
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0x99, 0xD1, 0x24, 0x01,
+                                                              0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01,
+                                                              0x01,
+                                                              0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+                                                              0x88, 0x99, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF,
+                                                              0x01,
+                                                              0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x02])
+
+      it "APPLICATION_MASTER_1_LINK_KEY should write a buffer", () ->
+        builder = new ZtcBuilder
+        request = new APSME.TransportKey.Request APSME.TransportKey.Request.KeyType.APPLICATION_MASTER_1_LINK_KEY,
+          destAddress: new IEEEAddress("00005E0000000001")
+          partnerAddress: new IEEEAddress("00005E0000000002")
+          initiator: true
+          key: new Key("00112233445566778899AABBCCDDEEFF")
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0x99, 0xD1, 0x23, 0x02,
+                                                              0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01,
+                                                              0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x02,
+                                                              0x01,
+                                                              0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+                                                              0x88, 0x99, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF])
+
+      it "APPLICATION_MASTER_2_LINK_KEY should write a buffer", () ->
+        builder = new ZtcBuilder
+        request = new APSME.TransportKey.Request APSME.TransportKey.Request.KeyType.APPLICATION_MASTER_2_LINK_KEY,
+          destAddress: new IEEEAddress("00005E0000000001")
+          partnerAddress: new IEEEAddress("00005E0000000002")
+          initiator: true
+          key: new Key("00112233445566778899AABBCCDDEEFF")
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0x99, 0xD1, 0x23, 0x03,
+                                                              0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01,
+                                                              0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x02,
+                                                              0x01,
+                                                              0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+                                                              0x88, 0x99, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF])
+
+      it "HIGH_SECURITY_NETWORK_KEY should write a buffer", () ->
+        builder = new ZtcBuilder
+        request = new APSME.TransportKey.Request APSME.TransportKey.Request.KeyType.HIGH_SECURITY_NETWORK_KEY,
+          destAddress: new IEEEAddress("00005E0000000001")
+          keySeqNumber: 1,
+          networkKey: new Key("00112233445566778899AABBCCDDEEFF")
+          useParent: true
+          parentAddress: new IEEEAddress("00005E0000000002")
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0x99, 0xD1, 0x24, 0x05,
+                                                              0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01,
+                                                              0x01,
+                                                              0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+                                                              0x88, 0x99, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF,
+                                                              0x01,
+                                                              0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x02])
+
+    describe "Indication", () ->
+      it "TRUST_CENTER_MASTER_KEY should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap () ->
+          expect(@vars.frame).to.be.instanceof APSME.TransportKey.Indication
+          expect(@vars.frame.srcAddress).to.be.deep.equal new IEEEAddress("00005E0000000001")
+          expect(@vars.frame.keyType).to.be.equal APSME.TransportKey.Indication.KeyType.TRUST_CENTER_MASTER_KEY
+          expect(@vars.frame.tcMasterKey).to.be.deep.equal new Key("00112233445566778899AABBCCDDEEFF")
+          done()
+        parser.write new Buffer([0x02, 0x98, 0xF2, 0x19,
+                                 0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01,
+                                 0x00,
+                                 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+                                 0x88, 0x99, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF,
+                                 0x00])
+
+      it "NETWORK_KEY should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap () ->
+          expect(@vars.frame).to.be.instanceof APSME.TransportKey.Indication
+          expect(@vars.frame.srcAddress).to.be.deep.equal new IEEEAddress("00005E0000000001")
+          expect(@vars.frame.keyType).to.be.equal APSME.TransportKey.Indication.KeyType.NETWORK_KEY
+          expect(@vars.frame.keySeqNumber).to.be.equal 2
+          expect(@vars.frame.networkKey).to.be.deep.equal new Key("00112233445566778899AABBCCDDEEFF")
+          done()
+        parser.write new Buffer([0x02, 0x98, 0xF2, 0x1A,
+                                 0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01,
+                                 0x01,
+                                 0x02,
+                                 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+                                 0x88, 0x99, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF,
+                                 0x00])
+
+      it "APPLICATION_MASTER_1_LINK_KEY should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap () ->
+          expect(@vars.frame).to.be.instanceof APSME.TransportKey.Indication
+          expect(@vars.frame.srcAddress).to.be.deep.equal new IEEEAddress("00005E0000000001")
+          expect(@vars.frame.keyType).to.be.equal APSME.TransportKey.Indication.KeyType.APPLICATION_MASTER_1_LINK_KEY
+          expect(@vars.frame.partnerAddress).to.be.deep.equal new IEEEAddress("00005E0000000002")
+          expect(@vars.frame.initiator).to.be.true
+          expect(@vars.frame.key).to.be.deep.equal new Key("00112233445566778899AABBCCDDEEFF")
+          done()
+        parser.write new Buffer([0x02, 0x98, 0xF2, 0x22,
+                                 0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01,
+                                 0x02,
+                                 0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x02,
+                                 0x01,
+                                 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+                                 0x88, 0x99, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF,
+                                 0x00])
+
+      it "APPLICATION_MASTER_2_LINK_KEY should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap () ->
+          expect(@vars.frame).to.be.instanceof APSME.TransportKey.Indication
+          expect(@vars.frame.srcAddress).to.be.deep.equal new IEEEAddress("00005E0000000001")
+          expect(@vars.frame.keyType).to.be.equal APSME.TransportKey.Indication.KeyType.APPLICATION_MASTER_2_LINK_KEY
+          expect(@vars.frame.partnerAddress).to.be.deep.equal new IEEEAddress("00005E0000000002")
+          expect(@vars.frame.initiator).to.be.true
+          expect(@vars.frame.key).to.be.deep.equal new Key("00112233445566778899AABBCCDDEEFF")
+          done()
+        parser.write new Buffer([0x02, 0x98, 0xF2, 0x22,
+                                 0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01,
+                                 0x03,
+                                 0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x02,
+                                 0x01,
+                                 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+                                 0x88, 0x99, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF,
+                                 0x00])
+
+      it "HIGH_SECURITY_NETWORK_KEY should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap () ->
+          expect(@vars.frame).to.be.instanceof APSME.TransportKey.Indication
+          expect(@vars.frame.srcAddress).to.be.deep.equal new IEEEAddress("00005E0000000001")
+          expect(@vars.frame.keyType).to.be.equal APSME.TransportKey.Indication.KeyType.HIGH_SECURITY_NETWORK_KEY
+          expect(@vars.frame.keySeqNumber).to.be.equal 2
+          expect(@vars.frame.networkKey).to.be.deep.equal new Key("00112233445566778899AABBCCDDEEFF")
+          expect(@vars.frame.useParent).to.be.true
+          expect(@vars.frame.parentAddress).to.be.deep.equal new IEEEAddress("00005E0000000002")
+          done()
+        parser.write new Buffer([0x02, 0x98, 0xF2, 0x23,
+                                 0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01,
+                                 0x05,
+                                 0x02,
+                                 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+                                 0x88, 0x99, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF,
+                                 0x01,
+                                 0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x02,
+                                 0x00])

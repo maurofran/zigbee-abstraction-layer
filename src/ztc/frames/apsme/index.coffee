@@ -46,3 +46,6 @@ module.exports =
   SwitchKey:
     Request: require "./switch-key-request"
     Indication: require "./switch-key-indication"
+  TransportKey:
+    Request: require "./transport-key-request"
+    Indication: require "./transport-key-indication"

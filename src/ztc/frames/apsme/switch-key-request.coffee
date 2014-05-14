@@ -12,9 +12,6 @@ class SwitchKeyRequest extends ZtcFrame
   @OPCODE_GROUP = 0x99
   @OPCODE = 0xD4
 
-  @Method =
-    SKKE: 0x00
-
   constructor: (@destAddress, @keySeqNumber) ->
     super SwitchKeyRequest.OPCODE_GROUP, SwitchKeyRequest.OPCODE
 
