@@ -41,3 +41,6 @@ module.exports =
     Confirm: require "./load-fragment-confirm"
   ProcessSecureFrame:
     Report: require "./process-secure-frame-report"
+  RegisterEndpoint:
+    Request: require "./register-endpoint-request"
+    Confirm: require "./register-endpoint-confirm"

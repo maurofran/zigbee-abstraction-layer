@@ -260,3 +260,30 @@ describe "APS", () ->
           expect(@vars.frame.status).to.be.equal APS.ProcessSecureFrame.Report.Status.SECURITY_FAIL
           done()
         parser.write new Buffer([0x02, 0x98, 0xCC, 0x01, 0xA2, 0x00])
+
+  describe "RegisterEndpoint", () ->
+    describe "Request", () ->
+      it "should write a buffer", () ->
+        builder = new ZtcBuilder
+        request = new APS.RegisterEndpoint.Request 0x01, 0x1234, 0x5678, 0x27, [0x0102, 0x0304], [0x0102, 0x0506, 0x0708], 0x01
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0xA3, 0x0B, 0x13,
+                                                              0x01,
+                                                              0x34, 0x12,
+                                                              0x78, 0x56,
+                                                              0x27,
+                                                              0x02,
+                                                              0x02, 0x01, 0x04, 0x03,
+                                                              0x03,
+                                                              0x02, 0x01, 0x06, 0x05, 0x08, 0x07,
+                                                              0x01])
+
+    describe "Confirm", () ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap () ->
+          expect(@vars.frame).to.be.instanceof APS.RegisterEndpoint.Confirm
+          expect(@vars.frame.status).to.be.equal 0x00
+          done()
+        parser.write new Buffer([0x02, 0xA4, 0x0B, 0x01, 0x00, 0x00])
