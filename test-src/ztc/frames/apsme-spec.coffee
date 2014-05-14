@@ -722,3 +722,34 @@ describe "APSME", () ->
                                  0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x02,
                                  0x03,
                                  0x00])
+
+  describe "UpdateDevice", () ->
+    describe "Request", () ->
+      it "should write a buffer", () ->
+        builder = new ZtcBuilder
+        request = new APSME.UpdateDevice.Request new IEEEAddress("00005E0000000001"),
+          new IEEEAddress("00005E0000000002"), new ShortAddress("5768"), APSME.UpdateDevice.Request.Status.LEFT
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0x99, 0xF3, 0x13,
+                                                              0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01,
+                                                              0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x02,
+                                                              0x57, 0x68,
+                                                              0x02])
+
+    describe "Indication", () ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap () ->
+          expect(@vars.frame).to.be.instanceof APSME.UpdateDevice.Indication
+          expect(@vars.frame.srcAddress).to.be.deep.equal new IEEEAddress("00005E0000000001")
+          expect(@vars.frame.deviceAddress).to.be.deep.equal new IEEEAddress("00005E0000000002")
+          expect(@vars.frame.deviceShortAddress).to.be.deep.equal new ShortAddress("5768")
+          expect(@vars.frame.status).to.be.equal APSME.UpdateDevice.Request.Status.LEFT
+          done()
+        parser.write new Buffer([0x02, 0x98, 0xD7, 0x13,
+                                 0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01,
+                                 0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x02,
+                                 0x57, 0x68,
+                                 0x02,
+                                 0x00])

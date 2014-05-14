@@ -52,3 +52,6 @@ module.exports =
   Unbind:
     Request: require "./unbind-request"
     Confirm: require "./unbind-confirm"
+  UpdateDevice:
+    Request: require "./update-device-request"
+    Indication: require "./update-device-indication"
