@@ -11,11 +11,11 @@ ZtcBuilder = require "../../../lib/ztc/ztc-builder"
 {IEEEAddress, Key} = require "../../../lib/ztc/datatypes"
 APS = require("../../../lib/ztc/frames").APS;
 
-describe "APS", () ->
+describe "APS", ->
 
-  describe "ClearDeviceKeyPairSet", () ->
-    describe "Request", () ->
-      it "should write a buffer", () ->
+  describe "ClearDeviceKeyPairSet", ->
+    describe "Request", ->
+      it "should write a buffer", ->
         builder = new ZtcBuilder
         ieeeAddress = new IEEEAddress "00005E0000000001"
         request = new APS.ClearDeviceKeyPairSet.Request ieeeAddress
@@ -23,41 +23,41 @@ describe "APS", () ->
         expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0xA3, 0x3F, 0x08,
                                                               0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01])
 
-    describe "Confirm", () ->
+    describe "Confirm", ->
       it "should read from a buffer", (done) ->
         parser = new ZtcParser
         parser.ztcFrame "frame"
-        parser.tap () ->
+        parser.tap ->
           expect(@vars.frame).to.be.instanceof APS.ClearDeviceKeyPairSet.Confirm
           expect(@vars.frame.apsSetStatus).to.be.equal 0x00
           done()
         parser.write new Buffer([0x02, 0xA4, 0x3F, 0x01, 0x00, 0x00])
 
-  describe "ConfirmId", () ->
-    describe "Report", () ->
+  describe "ConfirmId", ->
+    describe "Report", ->
       it "should read from a buffer", (done) ->
         parser = new ZtcParser
         parser.ztcFrame "frame"
-        parser.tap () ->
+        parser.tap ->
           expect(@vars.frame).to.be.instanceof APS.ConfirmId.Report
           expect(@vars.frame.assignedConfirmId).to.be.equal 0x4e
           done()
         parser.write new Buffer([0x02, 0x9D, 0x03, 0x01, 0x4e, 0x00])
 
-  describe "DataFragment", () ->
-    describe "Request", () ->
-      it "should write a buffer", () ->
+  describe "DataFragment", ->
+    describe "Request", ->
+      it "should write a buffer", ->
         builder = new ZtcBuilder
         request = new APS.DataFragment.Request 1, true, new Buffer([0x34, 0x23, 0x42])
         request.write builder
         expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0x9C, 0x01,
                                                               0x06, 0x01, 0x01, 0x03, 0x34, 0x23, 0x42])
 
-    describe "Indication", () ->
+    describe "Indication", ->
       it "should read from a buffer", (done) ->
         parser = new ZtcParser
         parser.ztcFrame "frame"
-        parser.tap () ->
+        parser.tap ->
           expect(@vars.frame).to.be.instanceof APS.DataFragment.Indication
           expect(@vars.frame.blockNumber).to.be.equal 0x02
           expect(@vars.frame.moreBlocks).to.be.equal true
@@ -65,38 +65,38 @@ describe "APS", () ->
           done()
         parser.write new Buffer([0x02, 0x9D, 0x02, 0x06, 0x02, 0x01, 0x03, 0x43, 0x56, 0x79, 0x00])
 
-  describe "DeregisterEndpoint", () ->
-    describe "Request", () ->
-      it "should write a buffer", () ->
+  describe "DeregisterEndpoint", ->
+    describe "Request", ->
+      it "should write a buffer", ->
         builder = new ZtcBuilder
         request = new APS.DeregisterEndpoint.Request 0x02
         request.write builder
         expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0xA3, 0x0A, 0x01, 0x02])
 
-    describe "Confirm", () ->
+    describe "Confirm", ->
       it "should read from a buffer", (done) ->
         parser = new ZtcParser
         parser.ztcFrame "frame"
-        parser.tap () ->
+        parser.tap ->
           expect(@vars.frame).to.be.instanceof APS.DeregisterEndpoint.Confirm
           expect(this.vars.frame.status).to.be.equal 0x00
           done()
         parser.write new Buffer([0x02, 0xA4, 0x0A, 0x01, 0x00, 0x00])
 
-  describe "GetDeviceKeyPairSet", () ->
-    describe "Request", () ->
-      it "should write a buffer", () ->
+  describe "GetDeviceKeyPairSet", ->
+    describe "Request", ->
+      it "should write a buffer", ->
         builder = new ZtcBuilder
         request = new APS.GetDeviceKeyPairSet.Request new IEEEAddress("00005E0000000001")
         request.write builder
         expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0xA3, 0x3B, 0x08,
                                                               0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01])
 
-    describe "Confirm", () ->
+    describe "Confirm", ->
       it "should read from a buffer", (done) ->
         parser = new ZtcParser
         parser.ztcFrame "frame"
-        parser.tap () ->
+        parser.tap ->
           expect(@vars.frame).to.be.instanceof APS.GetDeviceKeyPairSet.Confirm
           expect(@vars.frame.ieeeAddress).to.be.deep.equal new IEEEAddress("00005E0000000001")
           expect(@vars.frame.apsKeyType).to.be.equal 0x00
@@ -113,19 +113,19 @@ describe "APS", () ->
                                  0x11, 0x11, 0x11, 0x11, 0x22, 0x22, 0x22, 0x22,
                                  0x00])
 
-  describe "GetEndpointDescription", () ->
-    describe "Request", () ->
-      it "should write a buffer", () ->
+  describe "GetEndpointDescription", ->
+    describe "Request", ->
+      it "should write a buffer", ->
         builder = new ZtcBuilder
         request = new APS.GetEndpointDescription.Request 0x23
         request.write builder
         expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0xA3, 0x0D, 0x01, 0x23])
 
-    describe "Confirm", () ->
+    describe "Confirm", ->
       it "should read from a buffer", (done) ->
         parser = new ZtcParser
         parser.ztcFrame "frame"
-        parser.tap () ->
+        parser.tap ->
           expect(@vars.frame).to.be.instanceof APS.GetEndpointDescription.Confirm
           expect(@vars.frame.status).to.be.deep.equal 0x00
           expect(@vars.frame.endpoint).to.be.equal 0x23
@@ -145,19 +145,19 @@ describe "APS", () ->
                                  0x03, 0x23, 0x14, 0x50, 0x44, 0x81, 0x90
                                  0x00])
 
-  describe "GetEndpointIdList", () ->
-    describe "Request", () ->
-      it "should write a buffer", () ->
+  describe "GetEndpointIdList", ->
+    describe "Request", ->
+      it "should write a buffer", ->
         builder = new ZtcBuilder
         request = new APS.GetEndpointIdList.Request
         request.write builder
         expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0xA3, 0x0E, 0x00])
 
-    describe "Confirm", () ->
+    describe "Confirm", ->
       it "should read from a buffer", (done) ->
         parser = new ZtcParser
         parser.ztcFrame "frame"
-        parser.tap () ->
+        parser.tap ->
           expect(@vars.frame).to.be.instanceof APS.GetEndpointIdList.Confirm
           expect(@vars.frame.status).to.be.deep.equal 0x00
           expect(@vars.frame.endpointList).to.be.deep.equal [0x33, 0x12]
@@ -168,19 +168,19 @@ describe "APS", () ->
                                  0x33, 0x12,
                                  0x00])
 
-  describe "GetEPMaxWindowSize", () ->
-    describe "Request", () ->
-      it "should write a buffer", () ->
+  describe "GetEPMaxWindowSize", ->
+    describe "Request", ->
+      it "should write a buffer", ->
         builder = new ZtcBuilder
         request = new APS.GetEPMaxWindowSize.Request 0x02
         request.write builder
         expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0xA3, 0x09, 0x01, 0x02])
 
-    describe "Confirm", () ->
+    describe "Confirm", ->
       it "should read from a buffer", (done) ->
         parser = new ZtcParser
         parser.ztcFrame "frame"
-        parser.tap () ->
+        parser.tap ->
           expect(@vars.frame).to.be.instanceof APS.GetEPMaxWindowSize.Confirm
           expect(@vars.frame.status).to.be.deep.equal 0x00
           expect(@vars.frame.windowSize).to.be.equal 0x12
@@ -189,3 +189,275 @@ describe "APS", () ->
                                  0x00,
                                  0x12,
                                  0x00])
+
+  describe "GetMaxApplicationPayload", ->
+    describe "Request", ->
+      it "should write a buffer", ->
+        builder = new ZtcBuilder
+        request = new APS.GetMaxApplicationPaylod.Request 0x01, new IEEEAddress("00005E0000000001"), 0x02,
+                                                          0x1234, 0x5678, 0x03, 0x08, 0x9ABC, 0xF5, 0x03
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0xA3, 0x27, 0x14,
+                                                              0x01,
+                                                              0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01,
+                                                              0x02, 0x34, 0x12, 0x78, 0x56,
+                                                              0x03, 0x08, 0xBC, 0x9A, 0xF5, 0x03])
+
+    describe "Confirm", ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap ->
+          expect(@vars.frame).to.be.instanceof APS.GetMaxApplicationPaylod.Confirm
+          expect(@vars.frame.maxPayload).to.be.equal 0x59
+          done()
+        parser.write new Buffer([0x02, 0xA4, 0x27, 0x01, 0x59, 0x00])
+
+  describe "GetNumberOfEndpoints", ->
+    describe "Request", ->
+      it "should write a buffer", ->
+        builder = new ZtcBuilder
+        request = new APS.GetNumberOfEndpoints.Request
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0xA3, 0x0C, 0x00])
+
+    describe "Confirm", ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap ->
+          expect(@vars.frame).to.be.instanceof APS.GetNumberOfEndpoints.Confirm
+          expect(@vars.frame.status).to.be.equal 0x00
+          expect(@vars.frame.activeEndpoints).to.be.equal 0x02
+          done()
+        parser.write new Buffer([0x02, 0xA4, 0x0C, 0x02, 0x00, 0x02, 0x00])
+
+  describe "LoadFragment", ->
+    describe "Request", ->
+      it "should write a buffer", ->
+        builder = new ZtcBuilder
+        request = new APS.LoadFragment.Request new Buffer([0x01, 0x02, 0x03])
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0x9C, 0x11, 0x04, 0x03, 0x01, 0x02, 0x03])
+
+    describe "Confirm", ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap ->
+          expect(@vars.frame).to.be.instanceof APS.LoadFragment.Confirm
+          expect(@vars.frame.status).to.be.equal 0x00
+          done()
+        parser.write new Buffer([0x02, 0x9D, 0x11, 0x01, 0x00, 0x00])
+
+  describe "ProcessSecureFrame", ->
+    describe "Report", ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap ->
+          expect(@vars.frame).to.be.instanceof APS.ProcessSecureFrame.Report
+          expect(@vars.frame.status).to.be.equal APS.ProcessSecureFrame.Report.Status.SECURITY_FAIL
+          done()
+        parser.write new Buffer([0x02, 0x98, 0xCC, 0x01, 0xA2, 0x00])
+
+  describe "RegisterEndpoint", ->
+    describe "Request", ->
+      it "should write a buffer", ->
+        builder = new ZtcBuilder
+        request = new APS.RegisterEndpoint.Request 0x01, 0x1234, 0x5678, 0x27, [0x0102, 0x0304], [0x0102, 0x0506, 0x0708], 0x01
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0xA3, 0x0B, 0x13,
+                                                              0x01,
+                                                              0x34, 0x12,
+                                                              0x78, 0x56,
+                                                              0x27,
+                                                              0x02,
+                                                              0x02, 0x01, 0x04, 0x03,
+                                                              0x03,
+                                                              0x02, 0x01, 0x06, 0x05, 0x08, 0x07,
+                                                              0x01])
+
+    describe "Confirm", ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap ->
+          expect(@vars.frame).to.be.instanceof APS.RegisterEndpoint.Confirm
+          expect(@vars.frame.status).to.be.equal 0x00
+          done()
+        parser.write new Buffer([0x02, 0xA4, 0x0B, 0x01, 0x00, 0x00])
+
+  describe "ResetFragments", ->
+    describe "Request", ->
+      it "should write a buffer", ->
+        builder = new ZtcBuilder
+        request = new APS.ResetFragments.Request
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0x9C, 0x10, 0x00])
+
+    describe "Confirm", ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap ->
+          expect(@vars.frame).to.be.instanceof APS.ResetFragments.Confirm
+          expect(@vars.frame.data).to.be.deep.equal new Buffer([0x00])
+          done()
+        parser.write new Buffer([0x02, 0x9D, 0x10, 0x01, 0x00, 0x00])
+
+  describe "SetDeviceKeyPairSet", ->
+    describe "Request", ->
+      it "should write a buffer", ->
+        builder = new ZtcBuilder
+        ieeeAddress = new IEEEAddress "00005E0000000001"
+        key = new Key "00112233445566778899AABBCCDDEEFF"
+        request = new APS.SetDeviceKeyPairSet.Request ieeeAddress, 0x03, key
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0xA3, 0x3E, 0x19,
+                                                              0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01,
+                                                              0x03,
+                                                              0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+                                                              0x88, 0x99, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF])
+
+    describe "Confirm", ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap ->
+          expect(@vars.frame).to.be.instanceof APS.SetDeviceKeyPairSet.Confirm
+          expect(@vars.frame.apsSetStatus).to.be.equal APS.SetDeviceKeyPairSet.Confirm.Status.SUCCESS
+          done()
+        parser.write new Buffer([0x02, 0xA4, 0x3E, 0x01, 0x00, 0x00])
+
+  describe "SetEPMaxWindowSize", ->
+    describe "Request", ->
+      it "should write a buffer", ->
+        builder = new ZtcBuilder
+        request = new APS.SetEPMaxWindowSize.Request 0x01, 0x05
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0xA3, 0x0F, 0x02, 0x01, 0x05])
+
+    describe "Confirm", ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap ->
+          expect(@vars.frame).to.be.instanceof APS.SetEPMaxWindowSize.Confirm
+          expect(@vars.frame.status).to.be.equal APS.SetEPMaxWindowSize.Confirm.Status.SUCCESS
+          done()
+        parser.write new Buffer([0x02, 0xA4, 0x0F, 0x01, 0x00, 0x00])
+
+  describe "SetFragAckMask", ->
+    describe "Request", ->
+      it "should write a buffer", ->
+        builder = new ZtcBuilder
+        request = new APS.SetFragAckMask.Request 0x05
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0x9C, 0x12, 0x01, 0x05])
+
+    describe "Confirm", ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap ->
+          expect(@vars.frame).to.be.instanceof APS.SetFragAckMask.Confirm
+          expect(@vars.frame.status).to.be.equal APS.SetFragAckMask.Confirm.Status.SUCCESS
+          done()
+        parser.write new Buffer([0x02, 0x9D, 0x12, 0x01, 0x00, 0x00])
+
+  describe "SetFragWindowSize", ->
+    describe "Request", ->
+      it "should write a buffer", ->
+        builder = new ZtcBuilder
+        request = new APS.SetFragWindowSize.Request 0x05
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0x9C, 0x14, 0x01, 0x05])
+
+    describe "Confirm", ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap ->
+          expect(@vars.frame).to.be.instanceof APS.SetFragWindowSize.Confirm
+          expect(@vars.frame.status).to.be.equal APS.SetFragWindowSize.Confirm.Status.SUCCESS
+          done()
+        parser.write new Buffer([0x02, 0x9D, 0x14, 0x01, 0x00, 0x00])
+
+  describe "SetInterframeDelay", ->
+    describe "Request", ->
+      it "should write a buffer", ->
+        builder = new ZtcBuilder
+        request = new APS.SetInterframeDelay.Request 0x34
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0x9C, 0x15, 0x01, 0x34])
+
+    describe "Confirm", ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap ->
+          expect(@vars.frame).to.be.instanceof APS.SetInterframeDelay.Confirm
+          expect(@vars.frame.status).to.be.equal APS.SetInterframeDelay.Confirm.Status.SUCCESS
+          done()
+        parser.write new Buffer([0x02, 0x9D, 0x15, 0x01, 0x00, 0x00])
+
+  describe "SetMaxFragmentLength", ->
+    describe "Request", ->
+      it "should write a buffer", ->
+        builder = new ZtcBuilder
+        request = new APS.SetMaxFragmentLength.Request 0x52
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0x9C, 0x13, 0x01, 0x52])
+
+    describe "Confirm", ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap ->
+          expect(@vars.frame).to.be.instanceof APS.SetMaxFragmentLength.Confirm
+          expect(@vars.frame.status).to.be.equal APS.SetMaxFragmentLength.Confirm.Status.SUCCESS
+          done()
+        parser.write new Buffer([0x02, 0x9D, 0x13, 0x01, 0x00, 0x00])
+
+  describe "SetSecurityMaterials", ->
+    describe "Request", ->
+      it "DEVICE_KEY_PAIR_SET should write a buffer", ->
+        builder = new ZtcBuilder
+        request = new APS.SetSecurityMaterials.Request APS.SetSecurityMaterials.Request.AibAttribute.DEVICE_KEY_PAIR_SET,
+          deviceAddress: new IEEEAddress("00005E0000000001")
+          masterKey: new Key("00112233445566778899AABBCCDDEEFF")
+          linkKey: new Key("FFEEDDCCBBAA99887766554433221100")
+          outgoingFrameCounter: 0x34760901
+          incomingFrameCounter: 0x12345678
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0xA2, 0xFA, 0x31, 0xAA,
+                                                              0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01,
+                                                              0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+                                                              0x88, 0x99, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF,
+                                                              0xFF, 0xEE, 0xDD, 0xCC, 0xBB, 0xAA, 0x99, 0x88,
+                                                              0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11, 0x00,
+                                                              0x01, 0x09, 0x76, 0x34,
+                                                              0x78, 0x56, 0x34, 0x12])
+      it "TRUST_CENTER_ADDRESS should write a buffer", ->
+        builder = new ZtcBuilder
+        request = new APS.SetSecurityMaterials.Request APS.SetSecurityMaterials.Request.AibAttribute.TRUST_CENTER_ADDRESS,
+          new IEEEAddress("00005E0000000001")
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0xA2, 0xFA, 0x09, 0xAB,
+                                                              0x00, 0x00, 0x5E, 0x00, 0x00, 0x00, 0x00, 0x01])
+      it "DEVICE_KEY_PAIR_CURRENT should write a buffer", ->
+        builder = new ZtcBuilder
+        request = new APS.SetSecurityMaterials.Request APS.SetSecurityMaterials.Request.AibAttribute.DEVICE_KEY_PAIR_CURRENT, 0x52
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0xA2, 0xFA, 0x02, 0xAD, 0x52])
+
+    describe "Confirm", ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap ->
+          expect(@vars.frame).to.be.instanceof APS.SetSecurityMaterials.Confirm
+          expect(@vars.frame.status).to.be.equal APS.SetSecurityMaterials.Confirm.Status.INVALID_PARAMETER
+          done()
+        parser.write new Buffer([0x02, 0xA0, 0xFB, 0x01, 0x01, 0x00])

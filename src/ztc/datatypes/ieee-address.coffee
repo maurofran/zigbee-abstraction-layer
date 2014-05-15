@@ -12,7 +12,7 @@ class IEEEAddress
   # The length, in bytes, of this data
   @LENGTH = 8
 
-  @fromHex
+  @EMPTY_ADDRESS = new IEEEAddress "0000000000000000"
 
   # Creates a new IEEEAddress given the provided buffer content
   #

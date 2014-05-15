@@ -8,4 +8,5 @@
 module.exports =
   APS: require "./aps"
   APSDE: require "./apsde"
+  APSME: require "./apsme"
   ZTC: require "./ztc"
