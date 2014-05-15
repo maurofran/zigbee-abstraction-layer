@@ -62,3 +62,6 @@ module.exports =
   SetInterframeDelay:
     Request: require "./set-interframe-delay-request"
     Confirm: require "./set-interframe-delay-confirm"
+  SetMaxFragmentLength:
+    Request: require "./set-max-fragment-length-request"
+    Confirm: require "./set-max-fragment-length-confirm"
