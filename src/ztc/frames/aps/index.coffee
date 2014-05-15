@@ -65,3 +65,6 @@ module.exports =
   SetMaxFragmentLength:
     Request: require "./set-max-fragment-length-request"
     Confirm: require "./set-max-fragment-length-confirm"
+  SetSecurityMaterials:
+    Request: require "./set-security-materials-request"
+    Confirm: require "./set-security-materials-confirm"
