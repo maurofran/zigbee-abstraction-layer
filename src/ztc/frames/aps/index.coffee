@@ -50,3 +50,6 @@ module.exports =
   SetDeviceKeyPairSet:
     Request: require "./set-device-key-pair-set-request"
     Confirm: require "./set-device-key-pair-set-confirm"
+  SetEPMaxWindowSize:
+    Request: require "./set-ep-max-window-size-request"
+    Confirm: require "./set-ep-max-window-size-confirm"

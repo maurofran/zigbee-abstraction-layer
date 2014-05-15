@@ -329,3 +329,21 @@ describe "APS", () ->
           expect(@vars.frame.apsSetStatus).to.be.equal APS.SetDeviceKeyPairSet.Confirm.Status.SUCCESS
           done()
         parser.write new Buffer([0x02, 0xA4, 0x3E, 0x01, 0x00, 0x00])
+
+  describe "SetEPMaxWindowSize", () ->
+    describe "Request", () ->
+      it "should write a buffer", () ->
+        builder = new ZtcBuilder
+        request = new APS.SetEPMaxWindowSize.Request 0x01, 0x05
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0xA3, 0x0F, 0x02, 0x01, 0x05])
+
+    describe "Confirm", () ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap () ->
+          expect(@vars.frame).to.be.instanceof APS.SetEPMaxWindowSize.Confirm
+          expect(@vars.frame.status).to.be.equal APS.SetEPMaxWindowSize.Confirm.Status.SUCCESS
+          done()
+        parser.write new Buffer([0x02, 0xA4, 0x0F, 0x01, 0x00, 0x00])
