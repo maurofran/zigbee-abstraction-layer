@@ -56,3 +56,6 @@ module.exports =
   SetFragAckMask:
     Request: require "./set-frag-ack-mask-request"
     Confirm: require "./set-frag-ack-mask-confirm"
+  SetFragWindowSize:
+    Request: require "./set-frag-window-size-request"
+    Confirm: require "./set-frag-window-size-confirm"

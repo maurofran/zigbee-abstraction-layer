@@ -365,3 +365,21 @@ describe "APS", () ->
           expect(@vars.frame.status).to.be.equal APS.SetFragAckMask.Confirm.Status.SUCCESS
           done()
         parser.write new Buffer([0x02, 0x9D, 0x12, 0x01, 0x00, 0x00])
+
+  describe "SetFragWindowSize", () ->
+    describe "Request", () ->
+      it "should write a buffer", () ->
+        builder = new ZtcBuilder
+        request = new APS.SetFragWindowSize.Request 0x05
+        request.write builder
+        expect(builder.result()).to.be.deep.equal new Buffer([0x02, 0x9C, 0x14, 0x01, 0x05])
+
+    describe "Confirm", () ->
+      it "should read from a buffer", (done) ->
+        parser = new ZtcParser
+        parser.ztcFrame "frame"
+        parser.tap () ->
+          expect(@vars.frame).to.be.instanceof APS.SetFragWindowSize.Confirm
+          expect(@vars.frame.status).to.be.equal APS.SetFragWindowSize.Confirm.Status.SUCCESS
+          done()
+        parser.write new Buffer([0x02, 0x9D, 0x14, 0x01, 0x00, 0x00])
