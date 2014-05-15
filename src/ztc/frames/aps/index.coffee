@@ -53,3 +53,6 @@ module.exports =
   SetEPMaxWindowSize:
     Request: require "./set-ep-max-window-size-request"
     Confirm: require "./set-ep-max-window-size-confirm"
+  SetFragAckMask:
+    Request: require "./set-frag-ack-mask-request"
+    Confirm: require "./set-frag-ack-mask-confirm"
