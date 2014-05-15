@@ -59,3 +59,6 @@ module.exports =
   SetFragWindowSize:
     Request: require "./set-frag-window-size-request"
     Confirm: require "./set-frag-window-size-confirm"
+  SetInterframeDelay:
+    Request: require "./set-interframe-delay-request"
+    Confirm: require "./set-interframe-delay-confirm"
